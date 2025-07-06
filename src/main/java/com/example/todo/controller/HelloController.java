@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.todo.Details;
+import com.example.todo.Todo;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,18 +19,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 public class HelloController {
 
-    static ArrayList<Details> list = new ArrayList<Details>();
+    static ArrayList<Todo> list = new ArrayList<Todo>();
 
 
     // This method will fetch the list
     @GetMapping("/")
-    public ArrayList<Details> home() {
+    public ArrayList<Todo> home() {
         return list;
     }
 
     // This method will add the todo to list
     @PostMapping("/post")
-    public String insert(@RequestBody Details entity) {
+    public String insert(@RequestBody Todo entity) {
         entity.id = UUID.randomUUID();
         list.add(entity);
         return "Data Inserted";
@@ -45,9 +45,9 @@ public class HelloController {
         } catch (IllegalArgumentException e) {
             return "Invalid UUID format";
         }
-        Iterator<Details> iterator = list.iterator();
+        Iterator<Todo> iterator = list.iterator();
         while (iterator.hasNext()) {
-            Details obd = iterator.next();
+            Todo obd = iterator.next();
             if (obd.id.equals(uuid)) {
                 iterator.remove(); 
                 return "Data Deleted";
@@ -58,14 +58,14 @@ public class HelloController {
 
     // This method will delete the data from the list
     @PutMapping("/put/{id}")
-    public String putMethodName(@PathVariable String id, @RequestBody Details entity) {
+    public String putMethodName(@PathVariable String id, @RequestBody Todo entity) {
         UUID uuid;
         try {
             uuid = UUID.fromString(id);
         } catch (IllegalArgumentException e) {
             return "Invalid UUID format";
         }
-        for (Details obj : list) {
+        for (Todo obj : list) {
             if (obj.id.equals(uuid)) {
                 obj.title = entity.title;
                 obj.description = entity.description;
